@@ -16,18 +16,19 @@ public class JdbcAuthorRepository implements AuthorRepository {
     public Optional<Author> findByFirstAndLastName(String firstName, String lastName) {
         Author foundAuthor = null;
         try (Connection con = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD)) {
-            Statement statement = con.createStatement();
-            ResultSet rs = statement.executeQuery("SELECT id AS mojeId, firstName, lastName " +
-                    "FROM author " +
-                    "WHERE firstName = '" + firstName + "' " +
-                    "AND lastName = '" + lastName + "'");
+            PreparedStatement preparedStatement = con.prepareStatement(
+                    "SELECT id AS mojeId, firstName, lastName FROM Author " +
+                    "WHERE firstName = ? AND lastName = ?");
+            preparedStatement.setString(1, firstName);
+            preparedStatement.setString(2, lastName);
+            ResultSet rs = preparedStatement.executeQuery();
             if (rs.next()) {
                 Long authorId = rs.getLong("mojeId");
                 String authorName = rs.getString("firstName");
-                String authorLastName = rs.getString(3);
+                String authorLastName = rs.getString(3); // only to see how index is working
                 foundAuthor = new Author(authorId, authorName, authorLastName);
             }
-            statement.close();
+            preparedStatement.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
