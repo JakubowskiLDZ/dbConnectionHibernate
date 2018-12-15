@@ -44,7 +44,15 @@ public class JpaLocationRepository implements LocationRepository {
 
     @Override
     public Location save(Location entity) {
-        return null;
+        EntityManager entityManager =
+                HibernateEntityManagerFactory.get().createEntityManager();
+        entityManager.getTransaction().begin();
+
+        entityManager.persist(entity);
+
+        entityManager.getTransaction().commit();
+        entityManager.close();
+        return entity;
     }
 
     @Override
