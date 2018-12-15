@@ -57,6 +57,21 @@ public class JpaLocationRepository implements LocationRepository {
 
     @Override
     public Location update(Location entity) {
-        return null;
+        EntityManager entityManager =
+                HibernateEntityManagerFactory.get().createEntityManager();
+
+        Location foundLocation = entityManager.find(Location.class, entity.getId());
+        if(foundLocation != null){
+            foundLocation.setRackSymbol(entity.getRackSymbol());
+            foundLocation.setShelfSymbol(entity.getShelfSymbol());
+            foundLocation.setPosition(entity.getPosition());
+            entityManager.merge(foundLocation);
+        }else{
+            entityManager.persist(entity);
+        }
+
+        entityManager.getTransaction().commit();
+        entityManager.close();
+        return entity;
     }
 }
