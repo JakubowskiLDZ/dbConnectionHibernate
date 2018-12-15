@@ -79,6 +79,17 @@ public class JdbcAuthorRepository implements AuthorRepository {
 
     @Override
     public Author update(Author entity) {
-        return null;
+        try (Connection con = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD)) {
+            PreparedStatement statement = con.prepareStatement(
+                    "UPDATE Author SET firstName = ?, lastName = ? WHERE id = ?");
+            statement.setString(1, entity.getFirstName());
+            statement.setString(2, entity.getLastName());
+            statement.setLong(3, entity.getId());
+            statement.execute();
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return entity;
     }
 }
