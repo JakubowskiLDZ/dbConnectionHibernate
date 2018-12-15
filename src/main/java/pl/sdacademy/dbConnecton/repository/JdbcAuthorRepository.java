@@ -39,8 +39,10 @@ public class JdbcAuthorRepository implements AuthorRepository {
     public Optional<Author> findById(Long id) {
         Author foundAuthor = null;
         try (Connection con = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD)) {
-            Statement statement = con.createStatement();
-            ResultSet rs = statement.executeQuery("SELECT id, firstname, lastname FROM Author WHERE id = " + id);
+            PreparedStatement statement = con.prepareStatement(
+                    "SELECT id, firstname, lastname FROM Author WHERE id = ?");
+            statement.setLong(1, id);
+            ResultSet rs = statement.executeQuery();
             if (rs.next()) {
                 Long authorId = rs.getLong("id");
                 String authorName = rs.getString("firstname");
@@ -57,9 +59,12 @@ public class JdbcAuthorRepository implements AuthorRepository {
     @Override
     public Author save(Author entity) {
         try (Connection con = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD)) {
-            Statement statement = con.createStatement();
-            statement.execute("INSERT INTO Author(firstName, lastName) " +
-                    "VALUES ('" + entity.getLastName() + "', '" + entity.getLastName() + "')");
+            PreparedStatement statement = con.prepareStatement(
+                    "INSERT INTO Author(firstName, lastName) VALUES (?, ?)");
+            statement.setString(1, entity.getFirstName());
+            statement.setString(2, entity.getLastName());
+            statement.execute();
+
             ResultSet rs = statement.executeQuery("SELECT MAX(id) as maxId FROM Author");
             if (rs.next()) {
                 Long authorId = rs.getLong("maxId");
