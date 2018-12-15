@@ -55,7 +55,20 @@ public class JdbcAuthorRepository implements AuthorRepository {
 
     @Override
     public Author save(Author entity) {
-        return null;
+        try (Connection con = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD)) {
+            Statement statement = con.createStatement();
+            statement.execute("INSERT INTO Author(firstName, lastName) " +
+                    "VALUES ('" + entity.getLastName() + "', '" + entity.getLastName() + "')");
+            ResultSet rs = statement.executeQuery("SELECT MAX(id) as maxId FROM Author");
+            if (rs.next()) {
+                Long authorId = rs.getLong("maxId");
+                entity.setId(authorId);
+            }
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return entity;
     }
 
     @Override
