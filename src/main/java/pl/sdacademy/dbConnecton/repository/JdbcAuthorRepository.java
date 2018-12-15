@@ -36,7 +36,21 @@ public class JdbcAuthorRepository implements AuthorRepository {
 
     @Override
     public Optional<Author> findById(Long id) {
-        return Optional.empty();
+        Author foundAuthor = null;
+        try (Connection con = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD)) {
+            Statement statement = con.createStatement();
+            ResultSet rs = statement.executeQuery("SELECT id, firstname, lastname FROM Author WHERE id = " + id);
+            if (rs.next()) {
+                Long authorId = rs.getLong("id");
+                String authorName = rs.getString("firstname");
+                String authorLastName = rs.getString("lastname");
+                foundAuthor = new Author(authorId, authorName, authorLastName);
+            }
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return Optional.ofNullable(foundAuthor);
     }
 
     @Override
