@@ -26,7 +26,7 @@ public class ReaderController {
 
     public void borrowNewBook(User user) {
         String title = consoleDelegate.askUserForText("Book title");
-        String author = consoleDelegate.askUserForText("Author last name");
+        String author = consoleDelegate.askUserForText("Writer last name");
         Optional<Book> borrowedBook = bookService.borrowBook(user, title, author);
         if (borrowedBook.isPresent()) {
             consoleDelegate.printMessage("Book borrowed!");

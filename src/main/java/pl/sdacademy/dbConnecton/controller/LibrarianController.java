@@ -2,7 +2,7 @@ package pl.sdacademy.dbConnecton.controller;
 
 import pl.sdacademy.dbConnecton.controller.service.BookService;
 import pl.sdacademy.dbConnecton.controller.service.UserService;
-import pl.sdacademy.dbConnecton.model.Author;
+import pl.sdacademy.dbConnecton.model.Writer;
 import pl.sdacademy.dbConnecton.model.Book;
 import pl.sdacademy.dbConnecton.model.Location;
 import pl.sdacademy.dbConnecton.model.User;
@@ -24,10 +24,10 @@ public class LibrarianController {
     }
 
     public void addBook() {
-        List<Author> authors = new ArrayList<>();
+        List<Writer> writers = new ArrayList<>();
         Book book = new Book();
         Location location = new Location();
-        Optional<String> errorMessage = bookService.addNewBook(book, authors, location);
+        Optional<String> errorMessage = bookService.addNewBook(book, writers, location);
         errorMessage.ifPresent(System.out::println);
     }
 

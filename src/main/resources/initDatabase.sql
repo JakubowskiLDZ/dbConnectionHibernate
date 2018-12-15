@@ -6,7 +6,7 @@
 --Drop table UserRole;
 --Drop table Role;
 --Drop table User;
---Drop table Author;
+--Drop table Writer;
 
 
 create table Author (

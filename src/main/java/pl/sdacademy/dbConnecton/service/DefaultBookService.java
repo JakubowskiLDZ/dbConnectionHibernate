@@ -59,27 +59,27 @@ public class DefaultBookService implements BookService {
     }
 
     @Override
-    public Optional<String> addNewBook(Book book, List<Author> authors, Location location) {
+    public Optional<String> addNewBook(Book book, List<Writer> writers, Location location) {
         Optional<Location> foundLocation = locationRepository.find(location.getRackSymbol(), location.getShelfSymbol(), location.getPosition());
         if (foundLocation.isPresent()) {
             return Optional.of("Location already occupied");
         }
         Long locationId = locationRepository.save(location).getId();
-        List<Long> authorIds = getAuthorIds(authors);
+        List<Long> authorIds = getAuthorIds(writers);
         book.setAuthors(authorIds);
         book.setLocation(locationId);
         bookRepository.save(book);
         return Optional.empty();
     }
 
-    private List<Long> getAuthorIds(List<Author> authors) {
+    private List<Long> getAuthorIds(List<Writer> writers) {
         List<Long> authorIds = new ArrayList<>();
-        for (Author author : authors) {
-            Optional<Author> foundAuthor = authorRepository.findByFirstAndLastName(author.getFirstName(), author.getLastName());
+        for (Writer writer : writers) {
+            Optional<Writer> foundAuthor = authorRepository.findByFirstAndLastName(writer.getFirstName(), writer.getLastName());
             if (foundAuthor.isPresent()) {
                 authorIds.add(foundAuthor.get().getId());
             } else {
-                authorIds.add(authorRepository.save(author).getId());
+                authorIds.add(authorRepository.save(writer).getId());
             }
         }
         return authorIds;
