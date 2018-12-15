@@ -5,7 +5,7 @@
 --Drop table Category;
 --Drop table UserRole;
 --Drop table Role;
---Drop table User;
+--Drop table LibraryUser;
 --Drop table Writer;
 
 

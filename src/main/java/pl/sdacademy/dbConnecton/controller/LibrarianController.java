@@ -2,10 +2,10 @@ package pl.sdacademy.dbConnecton.controller;
 
 import pl.sdacademy.dbConnecton.controller.service.BookService;
 import pl.sdacademy.dbConnecton.controller.service.UserService;
+import pl.sdacademy.dbConnecton.model.LibraryUser;
 import pl.sdacademy.dbConnecton.model.Writer;
 import pl.sdacademy.dbConnecton.model.Book;
 import pl.sdacademy.dbConnecton.model.Location;
-import pl.sdacademy.dbConnecton.model.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,16 +38,16 @@ public class LibrarianController {
     }
 
     public void registerUser() {
-        User user = new User();
-        user.setUsername(console.askUserForText("Username"));
-        user.setPassword(console.askUserForText("Password"));
-        user.setFirstName(console.askUserForText("First name"));
-        user.setLastName(console.askUserForText("Last name"));
-        user.setAddress(console.askUserForText("Address"));
-        user.setPhoneNumber(console.askUserForText("Phone number"));
-        user.getPrivileges().add("READER");
+        LibraryUser libraryUser = new LibraryUser();
+        libraryUser.setUsername(console.askUserForText("Username"));
+        libraryUser.setPassword(console.askUserForText("Password"));
+        libraryUser.setFirstName(console.askUserForText("First name"));
+        libraryUser.setLastName(console.askUserForText("Last name"));
+        libraryUser.setHomeAddress(console.askUserForText("Address"));
+        libraryUser.setPhoneNumber(console.askUserForText("Phone number"));
+        libraryUser.getPrivileges().add("READER");
 
-        userService.addNewReader(user);
+        userService.addNewReader(libraryUser);
     }
 
     public void removeUser() {

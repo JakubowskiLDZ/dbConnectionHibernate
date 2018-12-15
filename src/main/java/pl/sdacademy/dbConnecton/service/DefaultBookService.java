@@ -27,17 +27,17 @@ public class DefaultBookService implements BookService {
     }
 
     @Override
-    public List<Book> getBorrowedBooks(User user) {
-        return bookRepository.findByBorrowingUserId(user.getId());
+    public List<Book> getBorrowedBooks(LibraryUser libraryUser) {
+        return bookRepository.findByBorrowingUserId(libraryUser.getId());
     }
 
     @Override
-    public Optional<Book> borrowBook(User user, String title, String author) {
+    public Optional<Book> borrowBook(LibraryUser libraryUser, String title, String author) {
         Optional<Book> foundBook = bookRepository.findByTitleAndAuthorLastName(title, author).stream().findAny();
         Boolean bookBorrowed = foundBook.map(Book::getId).map(bookBorrowRepository::isBookBorrowed).orElse(false);
         if (!bookBorrowed) {
             BookBorrow newBookBorrow = new BookBorrow();
-            newBookBorrow.setUserId(user.getId());
+            newBookBorrow.setUserId(libraryUser.getId());
             newBookBorrow.setBookId(foundBook.get().getId());
             newBookBorrow.setBorrowDate(LocalDateTime.now());
             bookBorrowRepository.save(newBookBorrow);
@@ -47,8 +47,8 @@ public class DefaultBookService implements BookService {
     }
 
     @Override
-    public boolean returnBook(User user, Long bookId) {
-        Optional<BookBorrow> borrowedBookRecord = bookBorrowRepository.findByUserIdAndBookId(user.getId(), bookId);
+    public boolean returnBook(LibraryUser libraryUser, Long bookId) {
+        Optional<BookBorrow> borrowedBookRecord = bookBorrowRepository.findByUserIdAndBookId(libraryUser.getId(), bookId);
         if (borrowedBookRecord.isPresent()) {
             BookBorrow bookBorrow = borrowedBookRecord.get();
             bookBorrow.setReturnDate(LocalDateTime.now());
