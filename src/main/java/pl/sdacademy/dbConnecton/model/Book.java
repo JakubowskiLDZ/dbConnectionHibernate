@@ -1,15 +1,24 @@
 package pl.sdacademy.dbConnecton.model;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
 public class Book {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String isbn;
     private String format;
+    @ManyToMany
+    @JoinTable(name = "BookAuthor",
+                joinColumns = @JoinColumn(name = "bookId", referencedColumnName = "id"))
     private List<Writer> authors;
+    @ManyToOne
     private Category category;
+    @ManyToOne
     private Location location;
     private boolean removed;
 
