@@ -8,17 +8,17 @@ public class Book {
     private String name;
     private String isbn;
     private String format;
-    private List<Long> authors;
-    private Long category;
-    private Long location;
+    private List<Writer> authors;
+    private Category category;
+    private Location location;
     private boolean removed;
 
     public Book() {
-        authors = new ArrayList<Long>();
+        authors = new ArrayList<>();
         removed = false;
     }
 
-    public Book(Long id, String name, String isbn, String format, List<Long> authors, Long category, Long location) {
+    public Book(Long id, String name, String isbn, String format, List<Writer> authors, Category category, Location location) {
         this();
         this.id = id;
         this.name = name;
@@ -61,27 +61,27 @@ public class Book {
         this.format = format;
     }
 
-    public List<Long> getAuthors() {
+    public List<Writer> getAuthors() {
         return authors;
     }
 
-    public void setAuthors(List<Long> authors) {
+    public void setAuthors(List<Writer> authors) {
         this.authors = authors;
     }
 
-    public Long getCategory() {
+    public Category getCategory() {
         return category;
     }
 
-    public void setCategory(Long category) {
+    public void setCategory(Category category) {
         this.category = category;
     }
 
-    public Long getLocation() {
+    public Location getLocation() {
         return location;
     }
 
-    public void setLocation(Long location) {
+    public void setLocation(Location location) {
         this.location = location;
     }
 

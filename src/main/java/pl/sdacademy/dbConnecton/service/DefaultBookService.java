@@ -64,22 +64,22 @@ public class DefaultBookService implements BookService {
         if (foundLocation.isPresent()) {
             return Optional.of("Location already occupied");
         }
-        Long locationId = locationRepository.save(location).getId();
-        List<Long> authorIds = getAuthorIds(writers);
-        book.setAuthors(authorIds);
-        book.setLocation(locationId);
+        location = locationRepository.save(location);
+        List<Writer> foundWriters = getAuthorIds(writers);
+        book.setAuthors(foundWriters);
+        book.setLocation(location);
         bookRepository.save(book);
         return Optional.empty();
     }
 
-    private List<Long> getAuthorIds(List<Writer> writers) {
-        List<Long> authorIds = new ArrayList<>();
+    private List<Writer> getAuthorIds(List<Writer> writers) {
+        List<Writer> authorIds = new ArrayList<>();
         for (Writer writer : writers) {
             Optional<Writer> foundAuthor = authorRepository.findByFirstAndLastName(writer.getFirstName(), writer.getLastName());
             if (foundAuthor.isPresent()) {
-                authorIds.add(foundAuthor.get().getId());
+                authorIds.add(foundAuthor.get());
             } else {
-                authorIds.add(authorRepository.save(writer).getId());
+                authorIds.add(authorRepository.save(writer));
             }
         }
         return authorIds;
