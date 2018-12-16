@@ -14,7 +14,8 @@ public class Book {
     private String format;
     @ManyToMany
     @JoinTable(name = "BookAuthor",
-                joinColumns = @JoinColumn(name = "bookId", referencedColumnName = "id"))
+                joinColumns = @JoinColumn(name = "bookId", referencedColumnName = "id"),
+                inverseJoinColumns = @JoinColumn(name = "authorId", referencedColumnName = "id"))
     private List<Writer> authors;
     @ManyToOne
     private Category category;
