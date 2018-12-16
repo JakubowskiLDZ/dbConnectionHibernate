@@ -112,6 +112,8 @@ public class LibraryUser {
     }
 
     public boolean isAdmin() {
-        return privileges.contains("ADMIN");
+        return privileges.stream().map(UserRole::getRoleName)
+                .anyMatch(roleName -> roleName.equalsIgnoreCase("admin"));
+
     }
 }
