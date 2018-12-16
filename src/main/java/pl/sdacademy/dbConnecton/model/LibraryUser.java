@@ -18,7 +18,7 @@ public class LibraryUser {
     @Column(name = "address")
     private String homeAddress;
     @OneToMany(fetch = FetchType.EAGER)
-    @JoinColumn
+    @JoinColumn(name = "userId", referencedColumnName = "id")
     private List<UserRole> privileges;
     private boolean removed;
 
