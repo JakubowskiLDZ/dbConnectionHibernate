@@ -2,10 +2,7 @@ package pl.sdacademy.dbConnecton.controller;
 
 import pl.sdacademy.dbConnecton.controller.service.BookService;
 import pl.sdacademy.dbConnecton.controller.service.UserService;
-import pl.sdacademy.dbConnecton.model.LibraryUser;
-import pl.sdacademy.dbConnecton.model.Writer;
-import pl.sdacademy.dbConnecton.model.Book;
-import pl.sdacademy.dbConnecton.model.Location;
+import pl.sdacademy.dbConnecton.model.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +42,7 @@ public class LibrarianController {
         libraryUser.setLastName(console.askUserForText("Last name"));
         libraryUser.setHomeAddress(console.askUserForText("Address"));
         libraryUser.setPhoneNumber(console.askUserForText("Phone number"));
-        libraryUser.getPrivileges().add("READER");
+        libraryUser.getPrivileges().add(new UserRole(null, "Reader"));
 
         userService.addNewReader(libraryUser);
     }

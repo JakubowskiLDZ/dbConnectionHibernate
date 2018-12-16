@@ -5,6 +5,9 @@ import pl.sdacademy.dbConnecton.controller.LibrarianController;
 import pl.sdacademy.dbConnecton.controller.LoginController;
 import pl.sdacademy.dbConnecton.controller.ReaderController;
 import pl.sdacademy.dbConnecton.model.LibraryUser;
+import pl.sdacademy.dbConnecton.repository.JpaLibraryUserRepository;
+import pl.sdacademy.dbConnecton.repository.JpaLocationRepository;
+import pl.sdacademy.dbConnecton.repository.JpaWriterRepository;
 import pl.sdacademy.dbConnecton.service.DefaultBookService;
 import pl.sdacademy.dbConnecton.service.DefaultLoginService;
 import pl.sdacademy.dbConnecton.service.DefaultUserService;
@@ -20,11 +23,11 @@ public class Application {
     public Application() {
         console = new ConsoleDelegate();
 
-        AuthorRepository authorRepository = null;
+        AuthorRepository authorRepository = new JpaWriterRepository();
         BookBorrowRepository bookBorrowRepository = null;
         BookRepository bookRepository = null;
-        LocationRepository locationRepository = null;
-        UserRepository userRepository = null;
+        LocationRepository locationRepository = new JpaLocationRepository();
+        UserRepository userRepository = new JpaLibraryUserRepository();
 
         DefaultBookService defaultBookService = new DefaultBookService(locationRepository, authorRepository, bookBorrowRepository, bookRepository);
         DefaultLoginService defaultLoginService = new DefaultLoginService(userRepository);

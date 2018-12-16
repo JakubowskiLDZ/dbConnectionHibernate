@@ -7,7 +7,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import java.util.Optional;
 
-public class IplLibraryUserRepository implements UserRepository {
+public class JpaLibraryUserRepository implements UserRepository {
     @Override
     public Optional<LibraryUser> findByUsernameAndPassword(String username, String password) {
 
@@ -29,16 +29,38 @@ public class IplLibraryUserRepository implements UserRepository {
 
     @Override
     public Optional<LibraryUser> findById(Long id) {
-        return Optional.empty();
+        EntityManager em = HibernateEntityManagerFactory.get().createEntityManager();
+        em.getTransaction().begin();
+
+        LibraryUser foundUser = em.find(LibraryUser.class, id);
+
+        em.getTransaction().commit();
+        em.close();
+        return Optional.ofNullable(foundUser);
     }
 
     @Override
     public LibraryUser save(LibraryUser entity) {
-        return null;
+        EntityManager em = HibernateEntityManagerFactory.get().createEntityManager();
+        em.getTransaction().begin();
+
+        em.persist(entity);
+
+        em.getTransaction().commit();
+        em.close();
+        return entity;
+
     }
 
     @Override
     public LibraryUser update(LibraryUser entity) {
+        EntityManager em = HibernateEntityManagerFactory.get().createEntityManager();
+        em.getTransaction().begin();
+
+        em.merge(entity);
+
+        em.getTransaction().commit();
+        em.close();
         return null;
     }
 }
