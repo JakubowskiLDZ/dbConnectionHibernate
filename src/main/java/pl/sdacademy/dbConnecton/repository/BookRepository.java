@@ -2,6 +2,7 @@ package pl.sdacademy.dbConnecton.repository;
 
 import pl.sdacademy.dbConnecton.model.Book;
 import pl.sdacademy.dbConnecton.service.repository.BaseRepository;
+import sun.plugin2.os.windows.SECURITY_ATTRIBUTES;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
@@ -12,8 +13,20 @@ public class BookRepository implements pl.sdacademy.dbConnecton.service.reposito
 
     @Override
     public List<Book> findByBorrowingUserId(Long id) {
+        EntityManager em = HibernateEntityManagerFactory.get().createEntityManager();
+        em.getTransaction().begin();
 
-        return null;
+        TypedQuery<Book>selectQuery = em.createQuery(
+        "FROM BookBorrow bb LEFT JOIN bb.book bk " +
+                "WHERE bb.user.id = :borrowingUserId AND bb.returnDate IS NULL",
+                Book.class);
+        selectQuery.setParameter("borrowingUserId", id);
+        List<Book> borrowedBooks = selectQuery.getResultList();
+
+
+        em.getTransaction().commit();
+        em.close();
+        return borrowedBooks;
     }
 
     @Override
